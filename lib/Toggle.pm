@@ -1,3 +1,4 @@
+# ABSTRACT: Feature toggles for Perl
 package Toggle;
 
 use Moo;
