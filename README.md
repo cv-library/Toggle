@@ -1,6 +1,7 @@
 # Toggle
 
 [![Build Status](https://travis-ci.org/cv-library/Toggle.svg?branch=master)](https://travis-ci.org/cv-library/Toggle)
+[![Coverage Status](https://img.shields.io/coveralls/cv-library/Toggle.svg)](https://coveralls.io/r/cv-library/Toggle)
 
 Feature toggles for Perl, stored in Redis (or any other store of your choice).
 
