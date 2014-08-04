@@ -182,7 +182,7 @@ use Moo;
 use String::CRC32;
 
 has name       => ( is => 'rw' );
-has percentage => ( is => 'rw', default => 0 );
+has percentage => ( is => 'rw', default => sub { 0 } );
 has users      => ( is => 'rw', default => sub { {} } );
 has groups     => ( is => 'rw', default => sub { {} } );
 
