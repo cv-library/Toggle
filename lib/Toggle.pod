@@ -32,9 +32,9 @@ Toggle - Feature toggles (a.k.a. flippers, flags, switches etc.)
     ...
     
     # Elsewhere, in a management UI tool
-    $toggle->add_user( chat => $bob );      # Turn it on for Bob
-    $toggle->add_group( chat => 'staff' );  # Enable staff testing
-    $toggle->add_percentage( chat => 10 );  # 10% rollout
+    $toggle->activate_user( chat => $bob );      # Turn it on for Bob
+    $toggle->activate_group( chat => 'staff' );  # Enable staff testing
+    $toggle->activate_percentage( chat => 10 );  # 10% rollout
 
 =head1 DESCRIPTION
 
@@ -42,7 +42,33 @@ Toggle - Feature toggles (a.k.a. flippers, flags, switches etc.)
 
 =head1 METHODS
 
+=head2 new
 
+=head2 define_group
+
+=head2 is_active
+
+=head2 activate
+
+=head2 deactivate
+
+=head2 activate_group
+
+=head2 deactivate_group
+
+=head2 activate_user
+
+=head2 deactivate_user
+
+=head2 activate_percentage
+
+=head2 deactivate_percentage
+
+=head2 add_feature
+
+=head2 remove_feature
+
+=head2 features
 
 =head1 SEE ALSO
 
