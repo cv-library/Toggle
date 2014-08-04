@@ -32,6 +32,15 @@ very quickly if you discover serious bugs.
 
 All this without needing to redeploy your code.
 
+## What's special about this module?
+
+This module stores the feature flags in a database of your choice - it works
+particularly well with Redis, and makes just one key lookup to decide if a
+feature is active.
+
+It becomes very easy to write a user interface to control the rollout of
+features.
+
 ## Copyright
 
 Copyright © 2014 CV-Library Ltd.
