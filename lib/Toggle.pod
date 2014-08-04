@@ -104,11 +104,12 @@ Turn on a feature for a group.  The group must have been defined previously
 
 =head2 deactivate_group
 
-Turn off a feature for a group.  The group must have been defined previously.
+Turn off a feature for a group.  The group must have been defined previously
+using L</define_group>.
 
     $toggle->deactivate_group( chat => 'admins' );
 
-Note that any users which have been explicitly enabled via L<activate_user>
+Note that any users which have been explicitly enabled via L</activate_user>
 will still be able to see the feature, even if they are in the group.
 
 =head2 activate_user
@@ -129,6 +130,9 @@ Activate a feature for a percentage of users, such as for an incremental
 rollout of a new feature.
 
     $toggle->activate_percentage( chat => 10 );
+
+The algorithm used is C<< CRC32( $user->id ) % 100 < percentage >>, so as the
+percentage increases, users do not fall out of the group.
 
 Note that activating the feature for 100% of users will activate the feature
 globally (i.e. when L</is_active> is called without a $user argument).
