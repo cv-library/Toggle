@@ -8,6 +8,10 @@ Feature toggles for Perl, stored in Redis (or any other store of your choice).
 Based on [James Golick's rollout](http://github.com/jamesgolick/rollout)
 library for Ruby.
 
+## How do I use this code?
+
+See [the POD](lib/Toggle.pod) for instructions.
+
 ## What are feature toggles?
 
 Feature toggles are known by a huge variety of names: feature switches,

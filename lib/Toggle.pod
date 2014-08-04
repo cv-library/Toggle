@@ -1,0 +1,57 @@
+=encoding UTF-8
+
+=head1 NAME
+
+Toggle - Feature toggles (a.k.a. flippers, flags, switches etc.)
+
+=head1 SYNOPSIS
+
+    use Redis;
+    use Toggle;
+    
+    # This probably happens once for your application, e.g. via Bread::Board
+    my $redis = Redis->new;
+    my $toggle = Toggle->new( storage => $redis );
+    
+    # Define any groups you might need - your sub will be passed the $user
+    # object that you send to is_active(), and should return true/false.
+    $toggle->define_group( staff => sub {
+        my $user = shift;
+        return $user->has_role('staff');
+    });
+    
+    ...
+    
+    # In your controllers
+    
+    # $user has an ->id accessor
+    if ( $toggle->is_active(chat => $user) ) {
+        # Show this user the shiny new chat feature
+    }
+    
+    ...
+    
+    # Elsewhere, in a management UI tool
+    $toggle->add_user( chat => $bob );      # Turn it on for Bob
+    $toggle->add_group( chat => 'staff' );  # Enable staff testing
+    $toggle->add_percentage( chat => 10 );  # 10% rollout
+
+=head1 DESCRIPTION
+
+
+
+=head1 METHODS
+
+
+
+=head1 SEE ALSO
+
+Github repo: L<https://github.com/cv-library/Toggle>
+
+Inspired/shamelessly ported from L<https://github.com/FetLife/rollout>
+
+=head1 COPYRIGHT
+
+Copyright © 2014 CV-Library Ltd.
+
+Licensed under the same terms as Perl 5.
