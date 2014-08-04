@@ -54,19 +54,6 @@ The storage attribute must be an object that supports C<get($key)>,
 C<set($key, $value)> and C<del($key)> methods.  This happens to be the same
 interface that Redis uses, but you could make your own.
 
-=head2 define_group
-
-You may wish to use this method to define groups for use in
-L</activate_group>.  You pass a subroutine which will accept a single
-argument (the $user object given to L</is_active>) and will return a
-boolean to say whether the user is in the group.
-
-    $toggle->define_group( admins => sub { shift->is_an_admin() } );
-
-The group 'all' is defined by default.
-
-    $toggle->define_group( all => sub { 1 } );
-
 =head2 is_active
 
 Check whether a feature is active.  This is the method which you would expect
@@ -94,6 +81,19 @@ want to turn it off altogether.  Overrides all the user/group/percentage
 activations that may have been on previously.
 
     $toggle->deactivate( 'chat' );
+
+=head2 define_group
+
+You may wish to use this method to define groups for use below in
+L</activate_group>.  You pass a subroutine which will accept a single
+argument (the $user object given to L</is_active>) and will return a
+boolean to say whether the user is in the group.
+
+    $toggle->define_group( admins => sub { shift->is_an_admin() } );
+
+The group 'all' is defined by default.
+
+    $toggle->define_group( all => sub { 1 } );
 
 =head2 activate_group
 
