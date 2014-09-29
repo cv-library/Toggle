@@ -233,11 +233,11 @@ describe 'A feature' => sub {
             $toggle->activate_percentage( chat => 20 );
         };
 
-        it 'is active for roughly 20/100 users' => sub {
+        it 'is active for roughly 200/1000 users' => sub {
             my @active
                 = grep { $toggle->is_active( chat => stub( id => $_ ) ) }
-                1 .. 120;
-            ok( 19 <= @active && @active <= 21 );
+                1 .. 1000;
+            ok( 190 <= @active && @active <= 210 );
         };
 
         it 'is active for roughly 40/200 users' => sub {
