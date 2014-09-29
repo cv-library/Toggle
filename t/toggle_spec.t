@@ -294,6 +294,33 @@ describe 'A feature' => sub {
             ok !$toggle->is_active( chat => stub( id => 24 ) );
         };
     };
+
+    context 'when given variants' => sub {
+        before sub {
+            $toggle->set_variants(
+                chat => [
+                    a => 20,
+                    b => 40,
+                ],
+            );
+        };
+
+        it 'returns variant "a" for roughly 40/200 users' => sub {
+            my @active
+                = grep { 'a' eq $toggle->variant( chat => stub( id => $_ ) ) }
+                1 .. 200;
+
+            ok( 35 <= @active && @active <= 45 );
+        };
+
+        it 'returns variant "b" for roughly 40/100 users' => sub {
+            my @active
+                = grep { 'b' eq $toggle->variant( chat => stub( id => $_ ) ) }
+                1 .. 100;
+
+            ok( 39 <= @active && @active <= 41 );
+        };
+    };
 };
 
 runtests unless caller();

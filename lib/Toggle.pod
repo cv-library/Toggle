@@ -36,6 +36,18 @@ Toggle - Feature toggles (a.k.a. flippers, flags, switches etc.)
     $toggle->activate_group( chat => 'staff' );  # Enable staff testing
     $toggle->activate_percentage( chat => 10 );  # 10% rollout
 
+    ...
+
+    if ( my $variant = $toggle->variant( chat => $user ) ) {
+        if ( $variant eq 'a' ) {
+            ...
+        }
+        elsif ( $variant eq 'b' ) {
+            ...
+        }
+    }
+
+
 =head1 DESCRIPTION
 
 L<Toggle> lets you activate features for different users, storing this
@@ -167,6 +179,23 @@ Remove a feature from the storage.
 
 This will disable it for all users, and will also stop it appearing in the
 output of L</features>.
+
+=head2 variant
+
+Test what variant that user should see.
+
+    $toggle->variant( chat => $user );
+
+=head2 set_variants
+
+Set the variants for a given feature.
+
+    $toggle->set_variants(
+        chat => [
+           a => 20,
+           b => 40,
+        ],
+    );
 
 =head1 SEE ALSO
 
