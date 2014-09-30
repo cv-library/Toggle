@@ -213,7 +213,7 @@ sub BUILDARGS {
         $args{percentage} = $raw_percentage;
         @{ $args{users} }{ split /,/,  $raw_users }  = ();
         @{ $args{groups} }{ split /,/, $raw_groups } = ();
-        @{ $args{variants} } = split /,/, $raw_variants;
+        @{ $args{variants} } = split /,/, $raw_variants || '';
     }
 
     return \%args;
