@@ -233,11 +233,11 @@ describe 'A feature' => sub {
             $toggle->activate_percentage( chat => 20 );
         };
 
-        it 'is active for roughly 20/100 users' => sub {
+        it 'is active for roughly 200/1000 users' => sub {
             my @active
                 = grep { $toggle->is_active( chat => stub( id => $_ ) ) }
-                1 .. 120;
-            ok( 19 <= @active && @active <= 21 );
+                1 .. 1000;
+            ok( 190 <= @active && @active <= 210 );
         };
 
         it 'is active for roughly 40/200 users' => sub {
@@ -292,6 +292,33 @@ describe 'A feature' => sub {
 
         it 'becomes inactive for all users' => sub {
             ok !$toggle->is_active( chat => stub( id => 24 ) );
+        };
+    };
+
+    context 'when given variants' => sub {
+        before sub {
+            $toggle->set_variants(
+                chat => [
+                    a => 20,
+                    b => 40,
+                ],
+            );
+        };
+
+        it 'returns variant "a" for roughly 40/200 users' => sub {
+            my @active
+                = grep { 'a' eq $toggle->variant( chat => stub( id => $_ ) ) }
+                1 .. 200;
+
+            ok( 35 <= @active && @active <= 45 );
+        };
+
+        it 'returns variant "b" for roughly 40/100 users' => sub {
+            my @active
+                = grep { 'b' eq $toggle->variant( chat => stub( id => $_ ) ) }
+                1 .. 100;
+
+            ok( 39 <= @active && @active <= 41 );
         };
     };
 };

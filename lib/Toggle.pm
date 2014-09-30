@@ -152,6 +152,22 @@ sub features {
     return split ',', ( $self->storage->get( _features_key() ) || "" );
 }
 
+sub set_variants {
+    my ( $self, $feature, $variants ) = @_;
+
+    $feature = $self->get($feature);
+
+    $feature->variants($variants);
+
+    $self->_save($feature);
+}
+
+sub variant {
+    my ( $self, $feature, $user ) = @_;
+
+    return $self->get($feature)->variant($user);
+}
+
 sub _key {
     my $name = shift;
     return "feature:$name";
@@ -185,16 +201,19 @@ has name       => ( is => 'rw' );
 has percentage => ( is => 'rw', default => sub { 0 } );
 has users      => ( is => 'rw', default => sub { {} } );
 has groups     => ( is => 'rw', default => sub { {} } );
+has variants   => ( is => 'rw', default => sub { [] } );
 
 sub BUILDARGS {
     my ( $class, %args ) = @_;
 
     if ( $args{string} ) {
-        my ( $raw_percentage, $raw_users, $raw_groups ) = split '\|',
-            $args{string};
+        my ( $raw_percentage, $raw_users, $raw_groups, $raw_variants )
+            = split /\|/, $args{string};
+
         $args{percentage} = $raw_percentage;
-        @{ $args{users} }{ split ',',  $raw_users }  = ();
-        @{ $args{groups} }{ split ',', $raw_groups } = ();
+        @{ $args{users} }{ split /,/,  $raw_users }  = ();
+        @{ $args{groups} }{ split /,/, $raw_groups } = ();
+        @{ $args{variants} } = split /,/, $raw_variants;
     }
 
     return \%args;
@@ -206,7 +225,8 @@ sub serialize {
     return join '|',
         $self->percentage,
         join( ',', keys %{ $self->users } ),
-        join( ',', keys %{ $self->groups } );
+        join( ',', keys %{ $self->groups } ),
+        join( ',', @{ $self->variants } );
 }
 
 sub add_user {
@@ -239,6 +259,23 @@ sub clear {
     $self->users(  {} );
     $self->groups( {} );
     $self->percentage(0);
+    $self->variants( [] );
+}
+
+sub variant {
+    my ( $self, $user ) = @_;
+
+    my $percentage      = 0;
+    my $user_percentage = crc32( $user->id ) % 100;
+    my @variants        = @{ $self->variants };
+
+    for ( my $i = 0; $i < @variants; $i += 2 ) {
+        $percentage += $variants[ $i + 1 ];
+
+        return $variants[$i] if $user_percentage < $percentage;
+    }
+
+    return '';
 }
 
 sub is_active {
