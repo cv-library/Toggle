@@ -146,7 +146,19 @@ rollout of a new feature.
 The algorithm used is C<< CRC32( $user->id ) % 100 < percentage >>, so as the
 percentage increases, users do not fall out of the group.
 
-Note that activating the feature for 100% of users will activate the feature
+Due to this implementation, it is important to understand that for the same set
+of users across multiple experiments, those who might fall within the 10th
+percentile for one rollout would be the same set of users to fall within
+the 10th percentile of the rollout for an entirely different experiment.
+
+This also has implications for using a subset of users admitted by one toggle
+for use in a subsequent toggle check, where both checks are based off percentage.
+For example, admitting 50% of users for a feature and then attempting to derive
+50% from that subset using another toggle. Instead of the 2nd toggle rolling out
+a feature to 25% of the users it checks against, it will be rolling it out to
+100% of those users.
+
+Finally, note that activating the feature for 100% of users will activate the feature
 globally (i.e. when L</is_active> is called without a $user argument).
 
 =head2 deactivate_percentage
