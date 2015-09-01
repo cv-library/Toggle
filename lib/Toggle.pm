@@ -196,6 +196,7 @@ package Toggle::Feature;
 
 use Moo;
 use String::CRC32;
+use Scalar::Util qw(blessed);
 
 has name       => ( is => 'rw' );
 has percentage => ( is => 'rw', default => sub { 0 } );
@@ -232,13 +233,13 @@ sub serialize {
 sub add_user {
     my ( $self, $user ) = @_;
 
-    $self->users->{ $user->id } = ();
+    $self->users->{ _user_id($user) } = ();
 }
 
 sub remove_user {
     my ( $self, $user ) = @_;
 
-    delete $self->users->{ $user->id };
+    delete $self->users->{ _user_id($user) };
 }
 
 sub add_group {
@@ -266,7 +267,7 @@ sub variant {
     my ( $self, $user ) = @_;
 
     my $percentage      = 0;
-    my $user_percentage = crc32( $user->id ) % 100;
+    my $user_percentage = crc32( _user_id($user) ) % 100;
     my @variants        = @{ $self->variants };
 
     for ( my $i = 0; $i < @variants; $i += 2 ) {
@@ -295,13 +296,13 @@ sub is_active {
 sub _is_user_in_percentage {
     my ( $self, $user ) = @_;
 
-    return crc32( $user->id ) % 100 < $self->percentage;
+    return crc32( _user_id($user) ) % 100 < $self->percentage;
 }
 
 sub _is_user_in_active_users {
     my ( $self, $user ) = @_;
 
-    return exists $self->users->{ $user->id };
+    return exists $self->users->{ _user_id($user) };
 }
 
 sub _is_user_in_active_group {
@@ -312,6 +313,12 @@ sub _is_user_in_active_group {
     }
 
     return;
+}
+
+sub _user_id {
+    my $user = shift;
+
+    return blessed $user && $user->can('id') ? $user->id : $user;
 }
 
 1;
