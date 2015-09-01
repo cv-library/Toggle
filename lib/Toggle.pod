@@ -24,7 +24,8 @@ Toggle - Feature toggles (a.k.a. flippers, flags, switches etc.)
     
     # In your controllers
     
-    # $user must have an ->id accessor
+    # $user must either have an ->id accessor, or return the id when used
+    # as a string.
     if ( $toggle->is_active(chat => $user) ) {
         # Show this user the shiny new chat feature
     }
@@ -78,7 +79,8 @@ or to check whether it is enabled for a particular user:
 
     $toggle->is_active( chat => $user );
 
-In the second case, the $user object must have an id accessor.
+In the second case, the $user object must have an id accessor, or
+stringify to the id (so a scalar is fine).
 
 =head2 activate
 
