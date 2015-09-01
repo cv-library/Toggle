@@ -1,4 +1,4 @@
-0.003 ???
+0.003 2015-09-01
     - Allow $user to be unblessed.  An ->id accessor is no longer required,
       if it stringifies to the id.
 
